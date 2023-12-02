@@ -1,6 +1,16 @@
+import { changeFilter } from 'components/redux/filterSlice';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-export function Filter({ filter, handleFilterChange }) {
+
+const Filter = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filter.filter);
+
+  const handleFilterChange = e => {
+    dispatch(changeFilter(e.target.value));
+  };
+
   return (
     <input
       type="text"
@@ -10,4 +20,6 @@ export function Filter({ filter, handleFilterChange }) {
       placeholder="Search contacts..."
     />
   );
-}
+};
+
+export default Filter;
