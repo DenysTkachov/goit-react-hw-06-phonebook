@@ -1,31 +1,28 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+
+import { fetchContacts, selectVisibleContacts } from 'redux/contactsSlice';
+import ContactForm from './ContactForm/ContactForm ';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList ';
-import { fetchContacts, selectFilteredContacts } from './redux/contactsSlice';
-import ContactForm from './ContactForm/ContactForm ';
-
 
 
 const App = () => {
   const dispatch = useDispatch();
-  const filteredContacts = useSelector(selectFilteredContacts);
+  const visibleContacts = useSelector(selectVisibleContacts);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchContacts());
+      } catch (error) {
+        console.error('Error in fetchData:', error);
+      }
+    };
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          await dispatch(fetchContacts());
-        } catch (error) {
-          console.error('Error in fetchData:', error);
-        }
-      };
-
-      fetchData();
-    }, [dispatch]);
-
-  
+    fetchData();
+  }, [dispatch]);
 
   return (
     <div>
@@ -33,12 +30,9 @@ const App = () => {
       <ContactForm />
       <h2>Контакты</h2>
       <Filter />
-      <ContactList contacts={filteredContacts} />
+      <ContactList contacts={visibleContacts} />
     </div>
   );
 };
 
 export default App;
-
-
-

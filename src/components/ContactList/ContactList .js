@@ -1,13 +1,12 @@
-import { deleteContact } from 'components/redux/contactsSlice';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-
+import { deleteContact } from 'redux/contactsSlice';
 
 const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
 
   const handleDeleteContact = id => {
-    dispatch(deleteContact({ id, storageKey: 'contacts' })); 
+    dispatch(deleteContact({ id }));
   };
 
   return (
@@ -25,4 +24,3 @@ const ContactList = ({ contacts }) => {
 };
 
 export default ContactList;
-

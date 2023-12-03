@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { addContact } from 'components/redux/contactsSlice';
-
+import { addContact } from 'redux/contactsSlice';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
   const [contact, setContact] = useState({ name: '', number: '' });
 
   const handleInputChange = e => {
@@ -18,32 +15,17 @@ const ContactForm = () => {
     }));
   };
 
- const handleAddContact = () => {
-   const { name, number } = contact;
+  const handleAddContact = () => {
+    const { name, number } = contact;
 
-   if (name.trim() === '' || number.trim() === '') {
-     return;
-   }
+    if (name.trim() === '' || number.trim() === '') {
+      return;
+    }
 
-   dispatch(addContact({ id: nanoid(), name, number }));
-   setContact({ name: '', number: '' });
+    dispatch(addContact({ id: nanoid(), name, number }));
+    setContact({ name: '', number: '' });
+  };
 
-   const updatedContacts = (contacts && contacts.list) || [];
-   updateLocalStorage([...updatedContacts, { id: nanoid(), name, number }]);
- };
-
- const updateLocalStorage = updatedContacts => {
-   try {
-     const savedContacts = localStorage.getItem('contacts');
-     const existingContacts = savedContacts ? JSON.parse(savedContacts) : [];
-
-     const newContacts = [...existingContacts, ...updatedContacts];
-
-     localStorage.setItem('contacts', JSON.stringify(newContacts));
-   } catch (error) {
-     console.error('Error updating localStorage:', error);
-   }
- };
   return (
     <div>
       <h2>Name</h2>
