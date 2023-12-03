@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { nanoid } from 'nanoid';
 import { addContact } from 'components/redux/contactsSlice';
 
+
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.contacts);
   const [contact, setContact] = useState({ name: '', number: '' });
 
   const handleInputChange = e => {
@@ -25,6 +27,16 @@ const ContactForm = () => {
 
     dispatch(addContact({ id: nanoid(), name, number }));
     setContact({ name: '', number: '' });
+    updateLocalStorage(contacts); // Передаем обновленные контакты
+  };
+
+  const updateLocalStorage = updatedContacts => {
+    try {
+      const contacts = JSON.stringify(updatedContacts);
+      localStorage.setItem('contacts', contacts);
+    } catch (error) {
+      console.error('Error updating localStorage:', error);
+    }
   };
 
   return (
