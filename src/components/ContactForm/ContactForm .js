@@ -7,7 +7,7 @@ import { addContact } from 'components/redux/contactsSlice';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(state => state.contacts);
   const [contact, setContact] = useState({ name: '', number: '' });
 
   const handleInputChange = e => {
@@ -27,7 +27,7 @@ const ContactForm = () => {
 
     dispatch(addContact({ id: nanoid(), name, number }));
     setContact({ name: '', number: '' });
-    updateLocalStorage(contacts); // Передаем обновленные контакты
+    updateLocalStorage([...contacts.contacts, { id: nanoid(), name, number }]);
   };
 
   const updateLocalStorage = updatedContacts => {
