@@ -27,7 +27,9 @@ const contactsSlice = createSlice({
       state.list.push(action.payload);
     },
     deleteContact: (state, action) => {
-      state.list = state.list.filter(contact => contact.id !== action.payload);
+      const { id, storageKey } = action.payload;
+      state.list = state.list.filter(contact => contact.id !== id);
+      updateLocalStorage(state.list, storageKey);
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
@@ -42,6 +44,14 @@ const contactsSlice = createSlice({
     });
   },
 });
+
+const updateLocalStorage = (contacts, storageKey) => {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(contacts));
+  } catch (error) {
+    console.error('Error updating localStorage:', error);
+  }
+};
 
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
 

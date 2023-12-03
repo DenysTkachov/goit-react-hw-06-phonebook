@@ -7,7 +7,7 @@ const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
 
   const handleDeleteContact = id => {
-    dispatch(deleteContact(id));
+    dispatch(deleteContact({ id, storageKey: 'contacts' })); 
   };
 
   return (
