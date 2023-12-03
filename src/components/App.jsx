@@ -25,7 +25,7 @@ const App = () => {
       fetchData();
     }, [dispatch]);
 
-  console.log('filteredContacts in App:', filteredContacts);
+  
 
   return (
     <div>

@@ -36,7 +36,6 @@ const contactsSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchContacts.fulfilled, (state, action) => {
       state.list = action.payload;
-      console.log('Contacts fetched successfully:', action.payload);
     });
     builder.addCase(fetchContacts.rejected, (state, action) => {
       console.error('Error fetching contacts:', action.error);
@@ -47,7 +46,7 @@ const contactsSlice = createSlice({
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
 
 export const selectFilteredContacts = createSelector(
-  state => state.contacts.filter,
+  state => state.filter.filter,
   state => state.contacts.list,
   (filter, contacts) => {
     return contacts
