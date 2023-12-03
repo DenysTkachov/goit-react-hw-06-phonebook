@@ -19,17 +19,15 @@ export const fetchContacts = createAsyncThunk(
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
-    contacts: [],
+    list: [],
     filter: '',
   },
   reducers: {
     addContact: (state, action) => {
-      state.contacts.push(action.payload);
+      state.list.push(action.payload);
     },
     deleteContact: (state, action) => {
-      state.contacts = state.contacts.filter(
-        contact => contact.id !== action.payload
-      );
+      state.list = state.list.filter(contact => contact.id !== action.payload);
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
@@ -37,7 +35,11 @@ const contactsSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(fetchContacts.fulfilled, (state, action) => {
-      state.contacts = action.payload;
+      state.list = action.payload;
+      console.log('Contacts fetched successfully:', action.payload);
+    });
+    builder.addCase(fetchContacts.rejected, (state, action) => {
+      console.error('Error fetching contacts:', action.error);
     });
   },
 });
@@ -45,8 +47,8 @@ const contactsSlice = createSlice({
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
 
 export const selectFilteredContacts = createSelector(
-  state => state.contacts && state.contacts.filter,
-  state => state.contacts && state.contacts.contacts,
+  state => state.contacts.filter,
+  state => state.contacts.list,
   (filter, contacts) => {
     return contacts
       ? contacts.filter(

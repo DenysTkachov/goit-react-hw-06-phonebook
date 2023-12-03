@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 
 const ContactList = ({ contacts }) => {
+  console.log('contacts in ContactList:', contacts);
   const dispatch = useDispatch();
 
   const handleDeleteContact = id => {

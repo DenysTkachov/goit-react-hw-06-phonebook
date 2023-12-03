@@ -12,9 +12,20 @@ const App = () => {
   const dispatch = useDispatch();
   const filteredContacts = useSelector(selectFilteredContacts);
 
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          await dispatch(fetchContacts());
+        } catch (error) {
+          console.error('Error in fetchData:', error);
+        }
+      };
+
+      fetchData();
+    }, [dispatch]);
+
+  console.log('filteredContacts in App:', filteredContacts);
 
   return (
     <div>

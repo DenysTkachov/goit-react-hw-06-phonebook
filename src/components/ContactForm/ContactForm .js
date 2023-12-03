@@ -18,27 +18,32 @@ const ContactForm = () => {
     }));
   };
 
-  const handleAddContact = () => {
-    const { name, number } = contact;
+ const handleAddContact = () => {
+   const { name, number } = contact;
 
-    if (name.trim() === '' || number.trim() === '') {
-      return;
-    }
+   if (name.trim() === '' || number.trim() === '') {
+     return;
+   }
 
-    dispatch(addContact({ id: nanoid(), name, number }));
-    setContact({ name: '', number: '' });
-    updateLocalStorage([...contacts.contacts, { id: nanoid(), name, number }]);
-  };
+   dispatch(addContact({ id: nanoid(), name, number }));
+   setContact({ name: '', number: '' });
 
-  const updateLocalStorage = updatedContacts => {
-    try {
-      const contacts = JSON.stringify(updatedContacts);
-      localStorage.setItem('contacts', contacts);
-    } catch (error) {
-      console.error('Error updating localStorage:', error);
-    }
-  };
+   const updatedContacts = (contacts && contacts.list) || [];
+   updateLocalStorage([...updatedContacts, { id: nanoid(), name, number }]);
+ };
 
+ const updateLocalStorage = updatedContacts => {
+   try {
+     const savedContacts = localStorage.getItem('contacts');
+     const existingContacts = savedContacts ? JSON.parse(savedContacts) : [];
+
+     const newContacts = [...existingContacts, ...updatedContacts];
+
+     localStorage.setItem('contacts', JSON.stringify(newContacts));
+   } catch (error) {
+     console.error('Error updating localStorage:', error);
+   }
+ };
   return (
     <div>
       <h2>Name</h2>
