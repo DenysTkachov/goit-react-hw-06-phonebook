@@ -45,15 +45,15 @@ const contactsSlice = createSlice({
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
 
 export const selectFilteredContacts = createSelector(
-  state => state.contacts.filter,
-  state => state.contacts.contacts,
+  state => state.contacts && state.contacts.filter,
+  state => state.contacts && state.contacts.contacts,
   (filter, contacts) => {
     return contacts
       ? contacts.filter(
           contact =>
             contact.name &&
             typeof contact.name === 'string' &&
-            contact.name.toLowerCase().includes(filter.toLowerCase())
+            contact.name.toLowerCase().includes(filter && filter.toLowerCase())
         )
       : [];
   }
