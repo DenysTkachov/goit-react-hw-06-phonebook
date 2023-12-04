@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
@@ -12,7 +11,6 @@ export const fetchContacts = createAsyncThunk(
       return [];
     } catch (error) {
       console.error('Error fetching contacts:', error);
-      throw error;
     }
   }
 );
@@ -45,21 +43,8 @@ const contactsSlice = createSlice({
   },
 });
 
-export const selectVisibleContacts = createSelector(
-  state => state.contacts.list,
-  state => state.contacts.filter,
-  (contacts, filter) => {
-    return contacts
-      ? contacts.filter(
-          contact =>
-            contact.name &&
-            typeof contact.name === 'string' &&
-            contact.name.toLowerCase().includes(filter && filter.toLowerCase())
-        )
-      : [];
-  }
-);
-
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
 
 export default contactsSlice.reducer;
+export const selectContacts = state => state.contacts.list;
+export const selectFilter = state => state.contacts.filter;

@@ -1,9 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteContact } from '../../redux/contactsSlice';
+import { selectVisibleContacts } from '../selectors/selectors';
 
-const ContactList = ({ contacts }) => {
+const ContactList = () => {
   const dispatch = useDispatch();
+  const visibleContacts = useSelector(selectVisibleContacts);
 
   const handleDeleteContact = id => {
     dispatch(deleteContact({ id }));
@@ -11,7 +13,7 @@ const ContactList = ({ contacts }) => {
 
   return (
     <ul>
-      {contacts.map(contact => (
+      {visibleContacts.map(contact => (
         <li key={contact.id}>
           {contact.name}: {contact.number}
           <button onClick={() => handleDeleteContact(contact.id)}>
