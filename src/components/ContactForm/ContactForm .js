@@ -26,6 +26,12 @@ const ContactForm = () => {
     setContact({ name: '', number: '' });
   };
 
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      handleAddContact();
+    }
+  };
+
   return (
     <div>
       <h2>Name</h2>
@@ -34,6 +40,7 @@ const ContactForm = () => {
         name="name"
         value={contact.name}
         onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
         required
       />
       <h2>Number</h2>
@@ -42,6 +49,7 @@ const ContactForm = () => {
         name="number"
         value={contact.number}
         onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
         required
       />
       <button onClick={handleAddContact}>Add Contact</button>

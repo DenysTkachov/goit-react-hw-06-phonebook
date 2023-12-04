@@ -11,6 +11,7 @@ export const fetchContacts = createAsyncThunk(
       return [];
     } catch (error) {
       console.error('Error fetching contacts:', error);
+      throw error; 
     }
   }
 );
