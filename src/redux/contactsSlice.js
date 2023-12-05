@@ -1,20 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
-export const fetchContacts = createAsyncThunk(
-  'contacts/fetchContacts',
-  async () => {
-    try {
-      const savedContacts = localStorage.getItem('contacts');
-      if (savedContacts) {
-        return JSON.parse(savedContacts);
-      }
-      return [];
-    } catch (error) {
-      console.error('Error fetching contacts:', error);
-      throw error; 
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -24,7 +8,8 @@ const contactsSlice = createSlice({
   },
   reducers: {
     addContact: (state, action) => {
-      state.list.push(action.payload);
+      const { id, name, number } = action.payload;
+      state.list.push({ id, name, number });
     },
     deleteContact: (state, action) => {
       const { id } = action.payload;
@@ -34,18 +19,10 @@ const contactsSlice = createSlice({
       state.filter = action.payload;
     },
   },
-  extraReducers: builder => {
-    builder.addCase(fetchContacts.fulfilled, (state, action) => {
-      state.list = action.payload;
-    });
-    builder.addCase(fetchContacts.rejected, (state, action) => {
-      console.error('Error fetching contacts:', action.error);
-    });
-  },
 });
 
 export const { addContact, deleteContact, setFilter } = contactsSlice.actions;
-
-export default contactsSlice.reducer;
 export const selectContacts = state => state.contacts.list;
 export const selectFilter = state => state.contacts.filter;
+
+export default contactsSlice.reducer;

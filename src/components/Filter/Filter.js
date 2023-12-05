@@ -11,13 +11,16 @@ const Filter = () => {
   };
 
   return (
-    <input
-      type="text"
-      name="filter"
-      value={filter}
-      onChange={handleFilterChange}
-      placeholder="Search contacts..."
-    />
+    <div>
+      <input
+        type="text"
+        name="filter"
+        value={filter}
+        onChange={handleFilterChange}
+        placeholder="Search contacts..."
+      />
+     
+    </div>
   );
 };
 

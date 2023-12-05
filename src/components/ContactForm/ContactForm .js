@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { addContact } from '../../redux/contactsSlice';
+import { addContact, selectContacts } from '../../redux/contactsSlice';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
   const [contact, setContact] = useState({ name: '', number: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = e => {
+    setErrorMessage('');
     const { name, value } = e.target;
     setContact(prevContact => ({
       ...prevContact,
@@ -19,11 +22,21 @@ const ContactForm = () => {
     const { name, number } = contact;
 
     if (name.trim() === '' || number.trim() === '') {
+      setErrorMessage('Name and number are required.');
+      return;
+    }
+
+    const existingContact = contacts.find(
+      c => c.name.toLowerCase() === name.toLowerCase()
+    );
+    if (existingContact) {
+      setErrorMessage('This contact already exists.');
       return;
     }
 
     dispatch(addContact({ id: nanoid(), name, number }));
     setContact({ name: '', number: '' });
+    setErrorMessage('');
   };
 
   const handleKeyPress = e => {
@@ -53,6 +66,7 @@ const ContactForm = () => {
         required
       />
       <button onClick={handleAddContact}>Add Contact</button>
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
     </div>
   );
 };
